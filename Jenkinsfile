@@ -13,12 +13,13 @@ pipeline {
                   checkout scm
                     sh "ls -lat"
                     sh "whoami"
-                    
+                    sh "sudo su -"
+                    sh "whoami"
                     sh "pwd"
                     sh "sudo yum install -y yum-utils"
                     sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
                     sh "sudo yum -y install packer"
-                    sh "sudo packer version"
+                    sh "packer version"
               }
           }
 //          stage('Checkout 2') {
@@ -29,7 +30,7 @@ pipeline {
 //      }
           stage('Create Packer AMI') {
               steps {
-                sh 'sudo packer build -var aws_access_key="$ACCESS_KEY" -var aws_secret_key="$SECRET_KEY" -var AMI_NAME="$AMI_NAME" -var ssh_username="$ssh_username" packer/template.json'
+                sh 'packer build -var aws_access_key="$ACCESS_KEY" -var aws_secret_key="$SECRET_KEY" -var AMI_NAME="$AMI_NAME" -var ssh_username="$ssh_username" packer/template.json'
                 //sh "cat manifest.json | jq .builds[0].artifact_id | tr -d '\"' | cut -b 11- > .ami"
                // script {AMI_ID = readFile('.ami').trim()}
       }
