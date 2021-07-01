@@ -20,6 +20,7 @@ pipeline {
                     sh "sudo yum -y install packer"
                     sh "packer version"
                   }
+              }
             }
           stage('Checkout 2') {
           //git branch: branch, credentialsId: '', url: "https://github.com/${gitRepoUrl}"
