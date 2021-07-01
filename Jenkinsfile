@@ -12,6 +12,7 @@ pipeline {
               steps {
                   checkout scm
                     sh "ls -lat"
+                    sh "whoami"
                     sh "pwd"
                     sh "sudo yum install -y yum-utils"
                     sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
