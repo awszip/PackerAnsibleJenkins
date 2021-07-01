@@ -2,7 +2,7 @@ pipeline {
     agent any
     parameters {
         string(name: "git_codebase", defaultValue: "https://github.com/awsyadav/PackerAnsibleJenkins.git", description: "git location of the packer files")
-        string(name: "ACCESS_KEY", defaultValue: "", description: "Access Key of FSMK-SecurityAccount"),
+        string(name: "ACCESS_KEY", defaultValue: "", description: "Access Key of FSMK-SecurityAccount")
         string(name: "SECRET_KEY", defaultValue: "", description: "Secret Key of FSMK-SecurityAccount")
     }
     stages {
