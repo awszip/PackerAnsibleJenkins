@@ -17,6 +17,8 @@ pipeline {
           stage('Create Packer AMI') {
               steps {
                 sh 'packer build -var aws_access_key="$ACCESS_KEY" -var aws_secret_key="$SECRET_KEY" -var AMI_NAME="$AMI_NAME" -var ssh_username="$ssh_username" packer/template.json'
+                sh "cat manifest.json | jq .builds[0].artifact_id | tr -d '\"' | cut -b 11- > .ami"
+                script {AMI_ID = readFile('.ami').trim()}
       }
      }
    }
