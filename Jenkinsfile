@@ -20,12 +20,12 @@ pipeline {
                     sh "packer version"
               }
           }
-          stage('Checkout 2') {
+//          stage('Checkout 2') {
           //git branch: branch, credentialsId: '', url: "https://github.com/${gitRepoUrl}"
-            steps {
-                git credentialsId: '4f246b54-c7f5-44fe-b114-1d8617879706', url: "${params.git_codebase}"
-            }
-      }
+//            steps {
+//                git credentialsId: '4f246b54-c7f5-44fe-b114-1d8617879706', url: "${params.git_codebase}"
+//            }
+//      }
           stage('Create Packer AMI') {
               steps {
                 sh 'packer build -var aws_access_key="$ACCESS_KEY" -var aws_secret_key="$SECRET_KEY" -var AMI_NAME="$AMI_NAME" -var ssh_username="$ssh_username" packer/template.json'
