@@ -11,7 +11,7 @@ pipeline {
           stage('Create Packer AMI') {
               steps {
                   withCredentials([
-                usernamePassword(credentialsId: '628ccbff-7941-4ae6-8687-aabf673d5ac8', passwordVariable: 'ACCESS_KEY', usernameVariable: 'SECRET_KEY')
+                usernamePassword(credentialsId: 'devop1fs', passwordVariable: 'SECRET_KEY', usernameVariable: 'ACCESS_KEY')
               ])
                 sh 'packer build -var aws_access_key="${ACCESS_KEY}" -var aws_secret_key="${SECRET_KEY}" -var AMI_NAME="$AMI_NAME" -var ssh_username="$ssh_username" packer/template.json'
                 sh "cat manifest.json | jq .builds[0].artifact_id | tr -d '\"' | cut -b 11- > .ami"
