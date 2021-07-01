@@ -10,6 +10,7 @@ pipeline {
 	stages {
 		stage('Create Packer AMI') {
 			steps {
+				script {
 				withCredentials([
 					usernamePassword(credentialsId: 'devop1fs', passwordVariable: 'SECRET_KEY', usernameVariable: 'ACCESS_KEY')
 				])
@@ -17,6 +18,7 @@ pipeline {
 				sh "cat manifest.json | jq .builds[0].artifact_id | tr -d '\"' | cut -b 11- > .ami"
 				script {
 					AMI_ID = readFile('.ami').trim()
+				}
 				}
 			}
 		}
