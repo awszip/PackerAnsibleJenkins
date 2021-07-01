@@ -8,12 +8,6 @@ pipeline {
         string(name: "ssh_username", defaultValue: "ubuntu", description: "Select SSH user based on above OS selection , ubunut, ec2-user")
     }
     stages {
-          stage('Checkout') {
-          //git branch: branch, credentialsId: '', url: "https://github.com/${gitRepoUrl}"
-            steps {
-                git credentialsId: '4f246b54-c7f5-44fe-b114-1d8617879706', url: "${params.git_codebase}"
-            }
-      }
           stage('Create Packer AMI') {
               steps {
                   withCredentials([
