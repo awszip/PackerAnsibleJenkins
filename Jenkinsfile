@@ -8,20 +8,17 @@ pipeline {
         string(name: "ssh_username", defaultValue: "ubuntu", description: "Select SSH user based on above OS selection , ubunut, ec2-user")
     }
     stages {
-          stage('Checkout 1) {
-            steps {
-                  dir("${JENKINS_HOME}/workspace/fs-goldenami")
-                  {
-                   checkout scm
+          stage ('checkout1') {
+              steps {
+                  checkout scm
                     sh "ls -lat"
                     sh "pwd"
                     sh "sudo yum install -y yum-utils"
                     sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
                     sh "sudo yum -y install packer"
                     sh "packer version"
-                  }
               }
-            }
+          }
           stage('Checkout 2') {
           //git branch: branch, credentialsId: '', url: "https://github.com/${gitRepoUrl}"
             steps {
