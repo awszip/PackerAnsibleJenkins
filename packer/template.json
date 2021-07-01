@@ -1,0 +1,81 @@
+{
+    "variables": {
+      "aws_access_key": "",
+      "aws_secret_key": "",
+      "aws_region":"ap-southeast-1",
+      "distro":"amz",
+      "ssh_username": "ubuntu",
+      "consul_version": "1.8.12",
+      "vpc_id": "vpc-13c53375",
+      "subnet_id": "subnet-eb3ff4a3",
+      "source_cidr": "172.16.0.0/16,172.17.0.0/16,0.0.0.0/0",
+      "launch_permissions": "619560303359",
+      "AMI_NAME": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*"
+    },
+    "builders": [{
+        "source_ami_filter": {
+          "filters": {
+            "virtualization-type": "hvm",
+            "name":   "{{user `AMI_NAME`}}", 
+            "root-device-type": "ebs"
+          },
+          "owners": ["099720109477"],
+          "most_recent": true
+        },
+        "type": "amazon-ebs",
+         "tags": {
+            "Distro": "{{ user `distro` }}",
+            "Base_AMI_Name": "{{ .SourceAMIName }}",
+            "Name": "fsmk-amazon-ecs-optimized-ami",
+            "consul_version": "{{user `consul_version`}}",
+            "Team": "infrastructure",
+            "Project": "main",
+            "Terraform": "false",
+            "Packer": "true"
+          },
+        "run_tags": {
+            "Name": "packer build",
+            "consul_version": "{{user `consul_version`}}",
+            "Team": "infrastructure",
+            "Project": "main",
+            "Terraform": "false",
+            "Packer": "true"
+          },
+        "run_volume_tags": {
+            "Name": "packer build",
+            "consul_version": "{{user `consul_version`}}",
+            "Team": "infrastructure",
+            "Project": "main",
+            "Terraform": "false",
+            "Packer": "true"
+          },
+        "associate_public_ip_address": 1,
+        "temporary_security_group_source_cidrs": "{{user `source_cidr`}}",
+        "vpc_id": "{{ user `vpc_id` }}",
+        "subnet_id": "{{ user `subnet_id` }}",
+        "access_key": "{{ user `aws_access_key` }}",
+        "secret_key": "{{ user `aws_secret_key` }}",
+        "region": "{{ user `aws_region` }}",
+        "instance_type": "t3.large",
+        "ssh_username": "{{user `ssh_username`}}",
+        "ami_name": "fsmk_base_ami_{{user `distro`}}ecs{{ isotime | clean_resource_name }}",
+        "ami_users": "{{user `launch_permissions`}}"
+      }],
+      "provisioners": [
+        {
+            "type": "shell",
+            "script": "scripts/ansible.sh"
+          },
+          {
+            "type": "ansible-local",
+            "playbook_file": "../ansible/site.yml",
+            "role_paths": [
+              "../ansible/roles/git",
+              "../ansible/roles/mysql",
+              "../ansible/roles/nginx",
+              "../ansible/roles/growlerfriday"
+            ],
+            "group_vars": "../ansible/group_vars"
+          }
+      ]
+    }
