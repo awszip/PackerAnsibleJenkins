@@ -3,7 +3,7 @@ pipeline {
     parameters {
         string(name: "git_codebase", defaultValue: "git@ec2-18-200-215-85.eu-west-1.compute.amazonaws.com:ibm-admin/sastoaws-infra.git", description: "git location of the terraform config files")
         string(name: "ACCESS_KEY", defaultValue: "", description: "Access Key of FSMK-SecurityAccount"),
-        string(name: "$SECRET_KEY", defaultValue: "", description: "Secret Key of FSMK-SecurityAccount")
+        string(name: "SECRET_KEY", defaultValue: "", description: "Secret Key of FSMK-SecurityAccount")
     }
     stages {
           stage('Checkout') {
