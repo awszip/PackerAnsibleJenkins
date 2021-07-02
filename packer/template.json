@@ -70,7 +70,7 @@
             "type": "ansible-local",
             "playbook_file": "ansible/site.yml",
             "role_paths": [
-              "../ansible/roles/git"
+              "/ansible/roles/git"
             ],
             "group_vars": "ansible/group_vars"
           }
