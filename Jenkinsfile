@@ -8,7 +8,7 @@ pipeline {
         string(name: "ssh_username", defaultValue: "ubuntu", description: "Select SSH user based on above OS selection , ubunut, ec2-user")
     }
     stages {
-          stage ('checkout1') {
+          stage ('Checkout & PackerInstall') {
               steps {
                   checkout scm
                     sh "ls -lat"
@@ -28,12 +28,22 @@ pipeline {
 //                git credentialsId: '4f246b54-c7f5-44fe-b114-1d8617879706', url: "${params.git_codebase}"
 //            }
 //      }
-          stage('Create Packer AMI') {
+          stage('Baking AMI') {
               steps {
                 sh 'packer build -var aws_access_key="$ACCESS_KEY" -var aws_secret_key="$SECRET_KEY" -var AMI_NAME="$AMI_NAME" -var ssh_username="$ssh_username" packer/template.json'
                 sh "cat manifest.json | jq .builds[0].artifact_id | tr -d '\"' | cut -b 11- > .ami"
                 script {AMI_ID = readFile('.ami').trim()}
       }
      }
+         stage('Push AMI') {
+             steps {
+                 sh 'aws ssm put-parameter --name “/prod/ubuntu/AMI/ --type "String" --value "  " --overwrite'
+             }
+         }
+         stage('Notification') {
+             steps {
+                 sh 'aws sns publish --topic-arn arn:aws:sns:ap-southeast-1:619560303359:FSMK-Image-Builder-SNS --message “Image building completed”'
+             }
+         }
    }
 }
