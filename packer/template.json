@@ -9,7 +9,7 @@
       "vpc_id": "vpc-13c53375",
       "subnet_id": "subnet-eb3ff4a3",
       "source_cidr": "172.16.0.0/16,172.17.0.0/16,0.0.0.0/0",
-      "launch_permissions": "619560303359",
+      "launch_permissions": "619560303359, 366775409521"
       "AMI_NAME": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*"
     },
     "builders": [{
