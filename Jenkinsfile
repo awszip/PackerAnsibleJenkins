@@ -8,7 +8,7 @@ pipeline {
         string(name: "ssh_username", defaultValue: "ubuntu", description: "Select SSH user based on above OS selection , ubunut, ec2-user")
     }
     stages {
-          stage ('Checkout & PackerInstall') {
+          stage ('Packer Install') {
               steps {
                   checkout scm
                     sh "ls -lat"
@@ -29,12 +29,12 @@ pipeline {
                 script {AMI_ID = readFile('.ami').trim()}
       }
      }
-         stage('Push AMI') {
+         stage('Push AMI to ParameterStore') {
              steps {
                  sh 'aws ssm put-parameter --name “/prod/ubuntu/AMI --type "String" --value "ami-id0asas" --overwrite'
              }
          }
-         stage('Notification') {
+         stage('Send Notification') {
              steps {
                  sh 'aws sns publish --topic-arn arn:aws:sns:ap-southeast-1:619560303359:FSMK-Image-Builder-SNS --message “Image building completed”'
              }
