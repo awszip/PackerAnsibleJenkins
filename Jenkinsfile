@@ -31,7 +31,7 @@ pipeline {
      }
          stage('Push AMI to ParameterStore') {
              steps {
-                 sh 'aws ssm put-parameter --name “/prod/ubuntu/AMI --type "String" --value "ami-id0asas" --overwrite'
+                 sh 'aws ssm put-parameter --name “/Prod/Images/FSMK/Ubuntu" --type "String" --value "ami-id0asas" --overwrite'
              }
          }
          stage('Send Notification') {
